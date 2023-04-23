@@ -1,1 +1,1 @@
-"# Casino-cmd-game" 
+Casino commandline project written in C#
