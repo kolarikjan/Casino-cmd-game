@@ -1,0 +1,15 @@
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\bin\Debug\net6.0\Casino.exe
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\bin\Debug\net6.0\Casino.deps.json
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\bin\Debug\net6.0\Casino.runtimeconfig.json
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\bin\Debug\net6.0\Casino.dll
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\bin\Debug\net6.0\Casino.pdb
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\Casino.csproj.AssemblyReference.cache
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\Casino.GeneratedMSBuildEditorConfig.editorconfig
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\Casino.AssemblyInfoInputs.cache
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\Casino.AssemblyInfo.cs
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\Casino.csproj.CoreCompileInputs.cache
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\Casino.dll
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\refint\Casino.dll
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\Casino.pdb
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\Casino.genruntimeconfig.cache
+C:\xampp\htdocs\Casino-cmd-game\Casino\Casino\obj\Debug\net6.0\ref\Casino.dll
