@@ -24,38 +24,34 @@ namespace Casino
                 int randomNumber = Games.RandomNumber(this.deck.Count);
                 if (i % 2 == 1)
                 {
-                    playerCards.Add(deck[randomNumber]);
+                    this.playerCards.Add(this.deck[randomNumber]);
                 }
                 else
                 {
-                    croupierCards.Add(deck[randomNumber]);
+                    this.croupierCards.Add(this.deck[randomNumber]);
                 }
-                deck.RemoveAt(randomNumber);
+                this.deck.RemoveAt(randomNumber);
             }
 
-            playerScore = CountHand(playerCards);
-            croupierScore = CountHand(croupierCards);
+            this.playerScore = CountHand(this.playerCards);
+            this.croupierScore = CountHand(this.croupierCards);
 
             Check21();
-        }
-        public void ActionHit()
-        {
-
         }
         public void PrintCards(bool hideCroupierCards = true)
         {
             Console.Write("Vaše karty: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
-            foreach (string card in playerCards)
+            foreach (string card in this.playerCards)
             {
                 Console.Write(card + " ");
             }
             Console.ResetColor();
-            Console.Write(string.Format("({0})\n\n", playerScore));
+            Console.Write(string.Format("({0})\n\n", this.playerScore));
 
             Console.Write("Krupiérovy karty: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
-            for (int i = 0; i < croupierCards.Count; i++)
+            for (int i = 0; i < this.croupierCards.Count; i++)
             {
                 if (hideCroupierCards && i != 0)
                 {
@@ -63,7 +59,7 @@ namespace Casino
                 }
                 else
                 {
-                    Console.Write(croupierCards[i] + " ");
+                    Console.Write(this.croupierCards[i] + " ");
                 };
             }
             Console.ResetColor();
@@ -73,24 +69,24 @@ namespace Casino
             }
             else
             {
-                Console.Write(string.Format("({0})\n", croupierScore));
+                Console.Write(string.Format("({0})\n", this.croupierScore));
             }
             Ui.MenuLine();
         }
         private void Check21()
         {
-            int player = playerScore;
-            int croupier = croupierScore;
+            int player = this.playerScore;
+            int croupier = this.croupierScore;
 
             int[] result = new int[2];
 
             if (croupier == 21 && player < 21)
             {
-                GameWinPlayer();
+                GameWinCroupier();
             }
             else if (player == 21 && croupier < 21)
             {
-                GameWinCroupier();
+                GameWinPlayer();
             }
             else if (player == 21 && croupier == 21)
             {
@@ -99,36 +95,36 @@ namespace Casino
         }
         private void GameWinPlayer()
         {
-            winner = "player";
-            finished = true;
+            this.winner = "player";
+            this.finished = true;
         }
         private void GameWinCroupier()
         {
-            winner = "croupier";
-            finished = true;
+            this.winner = "croupier";
+            this.finished = true;
         }
         private void GameTied()
         {
-            winner = "tied";
-            finished = true;
+            this.winner = "tied";
+            this.finished = true;
         }
         private void CheckScore()
         {
-            if (playerScore > 21)
+            if (this.playerScore > 21)
             {
                 GameWinCroupier();
             }
-            else if (croupierScore > 21)
+            else if (this.croupierScore > 21)
             {
                 GameWinPlayer();
             }
-            else if (croupierScore > 16)
+            else if (this.croupierScore > 16)
             {
-                if (playerScore == croupierScore)
+                if (this.playerScore == this.croupierScore)
                 {
                     GameTied();
                 }
-                else if (playerScore > croupierScore)
+                else if (this.playerScore > this.croupierScore)
                 {
                     GameWinPlayer();
                 }
@@ -148,21 +144,23 @@ namespace Casino
                     CheckScore();
                     break;
                 case 2:
-                    while (croupierScore <= 16)
+                    while (this.croupierScore <= 16)
                     {
                         SelectRandomCard("croupier");
                     }
                     CheckScore();
                     break;
                 case 3:
-                    while (croupierScore <= 16)
+                    SelectRandomCard("player");
+                    while (this.croupierScore <= 16)
                     {
                         SelectRandomCard("croupier");
                     }
-                    SelectRandomCard("player");
                     CheckScore();
                     break;
                 case 4:
+                    this.finished = true;
+                    this.winner = "none";
                     break;
             }
         }

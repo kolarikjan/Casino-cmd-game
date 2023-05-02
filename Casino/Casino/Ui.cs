@@ -44,21 +44,21 @@ namespace Casino
                             Console.WriteLine("3 - Ukončit aplikaci");
                             break;
                         case "Herní menu":
-                            menuOptions = 3;
+                            menuOptions = 4;
                             Console.WriteLine("1 - Blackjack\n");
                             Console.WriteLine("2 - Ruleta\n");
                             Console.WriteLine("3 - Hod mincí\n");
-                            Console.WriteLine("4 - Ukončit aplikaci");
+                            Console.WriteLine("4 - Zpět do hlavního menu");
                             break;
                         case "Hra probíhá | Blackjack":
-                            menuOptions = 3;
+                            menuOptions = 4;
                             Console.WriteLine("1 - Hit\n");
                             Console.WriteLine("2 - Stand\n");
                             Console.WriteLine("3 - Double\n");
                             Console.WriteLine("4 - Vzdát hru");
                             break;
                         case "Konec hry":
-                            menuOptions = 3;
+                            menuOptions = 2;
                             Console.WriteLine("1 - Zkusit znovu\n");
                             Console.WriteLine("2 - Zpět do herního menu");
                             break;
@@ -68,6 +68,12 @@ namespace Casino
                             Console.WriteLine("2 - Červná\n");
                             Console.WriteLine("3 - Zelená\n");
                             Console.WriteLine("4 - Zrušit sázku");
+                            break;
+                        case "Výběr strany | Hod mincí":
+                            menuOptions = 3;
+                            Console.WriteLine("1 - Panna\n");
+                            Console.WriteLine("2 - Orel\n");
+                            Console.WriteLine("3 - Zrušit sázku");
                             break;
                         default:
                             Console.WriteLine("Zatím tady nic není");
