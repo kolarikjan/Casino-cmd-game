@@ -17,10 +17,10 @@ namespace Casino
         public void MenuHeader(string title)
         {
             Console.Clear();
-            Console.WriteLine();
+            Console.WriteLine("");
             Console.Write("Casino");
             Console.Write(" - " + title);
-            Console.WriteLine();
+            Console.WriteLine("");
         }
         public int GenerateMenu(string title = "", bool generateHeader = true)
         {
@@ -49,6 +49,12 @@ namespace Casino
                             Console.WriteLine("2 - Ruleta\n");
                             Console.WriteLine("3 - Hod mincí\n");
                             Console.WriteLine("4 - Zpět do hlavního menu");
+                            break;
+                        case "Správa profilů":
+                            menuOptions = 3;
+                            Console.WriteLine("1 - Vytvořit nový profil\n");
+                            Console.WriteLine("2 - Smazat aktuální profil\n");
+                            Console.WriteLine("3 - Zpět do hlavního menu");
                             break;
                         case "Hra probíhá | Blackjack":
                             menuOptions = 4;
