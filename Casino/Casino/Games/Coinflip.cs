@@ -49,8 +49,21 @@ namespace Casino
             }
             return result;
         }
+        public int CalculateX()
+        {
+            int result = 0;
+            if (this.winner == "player")
+            {
+                result = 2;
+            }
+            else
+            {
+                result = 0;
+            }
+            return result;
+        }
 
-        public void PrintResult()
+        public void PrintResult(int currentBet = 0)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(string.Format("Vylosovaná strana: {0}", TranslateToSide(this.betSide)));
@@ -66,7 +79,7 @@ namespace Casino
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Vyhrál/a jste, gratulujeme!\n");
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine(string.Format("Vaše výhra činní ${0}", "500"));
+                    Console.WriteLine(string.Format("Vaše výhra činní ${0}", currentBet * 2));
                     Console.ResetColor();
                     Ui.MenuLine();
                     break;
@@ -74,7 +87,7 @@ namespace Casino
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Bohužel jste prohrál/a!\n");
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(string.Format("Celkem jste ztratil/a ${0}", "500"));
+                    Console.WriteLine(string.Format("Celkem jste ztratil/a ${0}", currentBet));
                     Console.ResetColor();
                     Ui.MenuLine();
                     break;

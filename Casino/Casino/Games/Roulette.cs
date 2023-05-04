@@ -114,7 +114,7 @@ namespace Casino
                 this.betColorName = "zelená";
             }
         }
-        public void PrintResult()
+        public void PrintResult(int currentBet = 0)
         {
 
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -133,7 +133,7 @@ namespace Casino
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Vyhrál/a jste, gratulujeme!\n");
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine(string.Format("Vaše výhra činní ${0}", "500"));
+                    Console.WriteLine(string.Format("Vaše výhra činní ${0}", currentBet * CalculateX()));
                     Console.ResetColor();
                     Ui.MenuLine();
                     break;
@@ -141,7 +141,7 @@ namespace Casino
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Bohužel jste prohrál/a!\n");
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(string.Format("Celkem jste ztratil/a ${0}", "500"));
+                    Console.WriteLine(string.Format("Celkem jste ztratil/a ${0}", currentBet));
                     Console.ResetColor();
                     Ui.MenuLine();
                     break;

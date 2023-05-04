@@ -25,6 +25,7 @@ namespace Casino
         public int GenerateMenu(string title = "", bool generateHeader = true)
         {
             int run = 0;
+            int menuOptions = 0;
             while (true)
             {
                 if (generateHeader)
@@ -32,7 +33,6 @@ namespace Casino
                     this.MenuHeader(title);
                     Ui.MenuLine();
                 }
-                int menuOptions = 0;
                 if (run == 0 || generateHeader)
                 {
                     switch (title)
@@ -51,10 +51,16 @@ namespace Casino
                             Console.WriteLine("4 - Zpět do hlavního menu");
                             break;
                         case "Správa profilů":
-                            menuOptions = 3;
+                            menuOptions = 4;
                             Console.WriteLine("1 - Vytvořit nový profil\n");
-                            Console.WriteLine("2 - Smazat aktuální profil\n");
-                            Console.WriteLine("3 - Zpět do hlavního menu");
+                            Console.WriteLine("2 - Přepnout profil\n");
+                            Console.WriteLine("3 - Smazat všechny uložené profily\n");
+                            Console.WriteLine("4 - Zpět do hlavního menu");
+                            break;
+                        case "Přepnout profil":
+                            menuOptions = 2;
+                            Console.WriteLine("1 - Přepnout porfil na nově vytvořený\n");
+                            Console.WriteLine("2 - Zůstat na aktuálním");
                             break;
                         case "Hra probíhá | Blackjack":
                             menuOptions = 4;

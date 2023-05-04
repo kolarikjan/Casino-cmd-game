@@ -164,7 +164,25 @@ namespace Casino
                     break;
             }
         }
-        public void PostGame()
+        public int CalculateX()
+        {
+            int result = 0;
+            if (this.winner == "player")
+            {
+                result = 2;
+            }
+            else if (this.winner == "none" | this.winner == "tied")
+            {
+                result = 1;
+            }
+            else
+            {
+                result = 0;
+            }
+            return result;
+        }
+
+        public void PostGame(int currentBet = 0)
         {
             switch (winner)
             {
@@ -172,7 +190,7 @@ namespace Casino
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Vyhrál/a jste, gratulujeme!\n");
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine(string.Format("Vaše výhra činní ${0}", "500"));
+                    Console.WriteLine(string.Format("Vaše výhra činní ${0}", currentBet * 2));
                     Console.ResetColor();
                     Ui.MenuLine();
                     break;
@@ -180,7 +198,7 @@ namespace Casino
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Bohužel jste prohrál/a!\n");
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(string.Format("Celkem jste ztratil/a ${0}", "500"));
+                    Console.WriteLine(string.Format("Celkem jste ztratil/a ${0}", currentBet));
                     Console.ResetColor();
                     Ui.MenuLine();
                     break;
@@ -188,10 +206,19 @@ namespace Casino
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Hra skončila remízou!\n");
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.WriteLine(string.Format("Vaše sázka v hodnotě ${0} se Vám vrátila zpět do peněženky", "500"));
+                    Console.WriteLine(string.Format("Vaše sázka v hodnotě ${0} se Vám vrátila zpět do peněženky", currentBet));
                     Console.ResetColor();
                     Ui.MenuLine();
                     break;
+                case "none":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Hru jste vzdal/a!\n");
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.WriteLine(string.Format("Polovina Vaší sázky (${0}) se Vám vrátila zpět do peněženky", currentBet));
+                    Console.ResetColor();
+                    Ui.MenuLine();
+                    break;
+
             }
         }
         private void SelectRandomCard(string who)

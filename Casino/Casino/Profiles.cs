@@ -1,5 +1,7 @@
 ﻿using Casino;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace Casino
@@ -12,6 +14,8 @@ namespace Casino
         public int currentId;
         public int currentWallet;
         public string currentName = "";
+
+        public int currentBet;
 
         private void GetProfilesData()
         {
@@ -36,7 +40,7 @@ namespace Casino
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Během práce se souborem došlo k chybě, zkuste program restartovat a vypnout soubory, do kterých se data ukládají!");
+                this.FileError();
             }
         }
         public bool AnyProfileExists()
@@ -63,11 +67,12 @@ namespace Casino
         public bool ProfileSelect()
         {
             bool result = false;
+            this.RefreshData();
             Ui.MenuLine();
             int i = 0;
             foreach (List<string> profile in this.profilesData)
             {
-                Console.Write(string.Format("{0} - {1} (Peněženka: ${2})", i, profile[0], profile[1]));
+                Console.Write(string.Format("{0} - {1} (Peněženka: ${2})", i + 1, profile[0], profile[1]));
                 if (i + 1 != this.profilesData.Count) Console.Write("\n\n");
                 i++;
             }
@@ -91,11 +96,40 @@ namespace Casino
                     }
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Console.WriteLine("Během práce se souborem došlo k chybě, zkuste program restartovat a vypnout soubory, do kterých se data ukládají!");
+                this.FileError();
             }
             return result;
+        }
+        public void SwitchToNewAccount()
+        {
+            int count = this.profilesData.Count - 1;
+            this.currentId = count;
+            this.currentName = this.profilesData[count][0];
+            this.currentWallet = int.Parse(this.profilesData[count][1]);
+        }
+        public void DeleteAccounts()
+        {
+            try
+            {
+                if (File.Exists(this.path))
+                {
+                    File.Delete(this.path);
+                    this.profilesData.Clear();
+                }
+            }
+            catch (Exception)
+            {
+                this.FileError();
+            }
+            
+
+        }
+        private void RefreshData()
+        {
+            this.profilesData.Clear();
+            this.GetProfilesData();
         }
         public int ProfileCreate()
         {
@@ -112,6 +146,7 @@ namespace Casino
                         if(!this.CertainProfileExist(username))
                         {
                             this.ProfileNewSave(username);
+                            this.GetProfilesData();
                             result = 0;
                         }
                         else
@@ -133,9 +168,64 @@ namespace Casino
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Během práce se souborem došlo k chybě, zkuste program restartovat a vypnout soubory, do kterých se data ukládají!");
-                return;
+                this.FileError();
             }
+        }
+        public bool AcceptBet()
+        {
+            Console.WriteLine(string.Format("Aktuálně na účtě máte: ${0}", this.currentWallet));
+            Ui.MenuLine();
+            Console.Write("Kolik peněz chcete vsadit: ");
+            bool result = false;
+            try
+            {
+                string? input = Console.ReadLine();
+                if (input != null)
+                {
+                    int bet = int.Parse(input);
+                    if (bet > 0 && bet <= this.currentWallet)
+                    {
+                        Bet(bet);
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                this.FileError();
+            }
+            return result;
+            
+        }
+        public void Bet(int bet)
+        {
+            this.currentBet = bet;
+            string text = File.ReadAllText(this.path);
+            int currentWalletNew = this.currentWallet - bet;
+            text = text.Replace(string.Format("{0},{1}", this.currentName, this.currentWallet), string.Format("{0},{1}", this.currentName, currentWalletNew));
+            this.currentWallet = currentWalletNew;
+            File.WriteAllText(this.path, text);
+        }
+        public void CalculateWinnings(int x = 2)
+        {
+            try
+            {
+                string text = File.ReadAllText(this.path);
+                int currentWalletNew = this.currentWallet + (this.currentBet * x);
+                text = text.Replace(string.Format("{0},{1}", this.currentName, this.currentWallet), string.Format("{0},{1}", this.currentName, currentWalletNew));
+                this.currentWallet = currentWalletNew;
+                File.WriteAllText(this.path, text);
+            }
+            catch (Exception)
+            {
+                this.FileError();
+            }
+        }
+        private void FileError()
+        {
+            Console.WriteLine("Během práce se souborem došlo k chybě, zkuste program restartovat a vypnout soubory, do kterých se data ukládají!");
+            Console.ReadKey();
+            Environment.Exit(0);
         }
     }
 }
