@@ -8,6 +8,10 @@ namespace Casino
 {
     internal class Coinflip
     {
+        //
+        // trida pro hru coinflip
+        //
+
         public bool finished = false;
         public string winner = "";
         public int betSide;
@@ -15,6 +19,9 @@ namespace Casino
 
         public void Game(int betSide)
         {
+            //
+            // metoda, ktera obstarava samotnou hru - ulozi na co hrac vsadil, vylosuje random cislo a rozhoduje o tom, kdo vyhral
+            //
             this.betSide = betSide;
             this.rolledSide = Games.RandomNumber(2);
             if (betSide == this.rolledSide)
@@ -29,15 +36,26 @@ namespace Casino
         }
         private void GameWinPlayer()
         {
+            //
+            // uklada informaci o tom, ze hrac vyhral
+            //
             this.winner = "player";
         }
         private void GameWinComputer()
         {
+            //
+            // uklada informaci o tom, ze pocitac vyhral
+            //
             this.winner = "computer";
         }
 
         private string TranslateToSide(int side)
         {
+            //
+            // preklada cislo na stranu mince (1-panna, 2-orel)
+            //
+            // side = zde vkladame informaci o tom, jakou stranu mince chceme zjistit
+            //
             string result = "";
             if (side == 1)
             {
@@ -51,6 +69,9 @@ namespace Casino
         }
         public int CalculateX()
         {
+            //
+            // pocita jakym cislem nasobime vyhru
+            //
             int result = 0;
             if (this.winner == "player")
             {
@@ -65,6 +86,11 @@ namespace Casino
 
         public void PrintResult(int currentBet = 0)
         {
+            //
+            // metoda, vypisujici infomraci o tom kdo vyhral, pripadne kolik kdo vyhral a prohral
+            //
+            // currentBet = jaka byla vsazena castka
+            //
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(string.Format("Vylosovaná strana: {0}", TranslateToSide(this.betSide)));
             Console.ForegroundColor = ConsoleColor.DarkYellow;

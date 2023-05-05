@@ -8,14 +8,26 @@ namespace Casino
 {
     internal class Ui
     {
+        //
+        // trida pro uzivatelske rozhrani, vypisovani "grafickych" casti aplikace jako menu, header apod
+        //
+
         public static void MenuLine()
         {
+            //
+            // pouze kosmeticka funkce vyvarejici caru, tak aby byla vzdy stejna
+            //
             Console.WriteLine();
             Console.WriteLine("--------------------");
             Console.WriteLine();
         }
         public void MenuHeader(string title)
         {
+            //
+            // funkce generujici hlavicku pro jednotlive stavy aplikace
+            //
+            // title = jaky text se vlozi do headeru - napr (o jake meno se jedna, v jakem stadiu jsou rozehrane hry apod)
+            //
             Console.Clear();
             Console.WriteLine("");
             Console.Write("Casino");
@@ -24,6 +36,15 @@ namespace Casino
         }
         public int GenerateMenu(string title = "", bool generateHeader = true)
         {
+            //
+            // funkce generujici menu, stara se o vypis moznosti jednotlivych menu a overeni volby uzivatele a nasledne navraceni volby
+            //
+            // title = urcuje jake menu se vypise, vsechna menu jsou vypsana ve switchni nize
+            //         jaky text se vlozi do headeru - napr (o jake meno se jedna, v jakem stadiu jsou rozehrane hry apod)
+            // generateHeader = jestli se ma vypsat hlavicka a hned potom menu (v pripade true)
+            //         false se zadava rucne jen v pripade, ze mezi menu a hlavicku chceme vlozit nejakou dalsi zpravu, napr vysledek hry
+            //         v tomto pripade se musi samostatne vyvolat MenuHeader(), pote nase zprava a pote GenerateMenu(xxx, false)
+            //
             int run = 0;
             int menuOptions = 0;
             while (true)
@@ -37,6 +58,7 @@ namespace Casino
                 {
                     switch (title)
                     {
+                        // v pripade vytvareni noveho menu, je nutne vytvorit novou case (pokud nechceme vyuzit jiz zde vytvorene)
                         case "Hlavní menu":
                             menuOptions = 3;
                             Console.WriteLine("1 - Hrát hazardní hry\n");
@@ -62,12 +84,17 @@ namespace Casino
                             Console.WriteLine("1 - Přepnout porfil na nově vytvořený\n");
                             Console.WriteLine("2 - Zůstat na aktuálním");
                             break;
-                        case "Hra probíhá | Blackjack":
+                        case "Hra probíhá | Blackjack 1. kolo":
                             menuOptions = 4;
                             Console.WriteLine("1 - Hit\n");
                             Console.WriteLine("2 - Stand\n");
                             Console.WriteLine("3 - Double\n");
                             Console.WriteLine("4 - Vzdát hru");
+                            break;
+                        case "Hra probíhá | Blackjack":
+                            menuOptions = 2;
+                            Console.WriteLine("1 - Hit\n");
+                            Console.WriteLine("2 - Stand");
                             break;
                         case "Konec hry":
                             menuOptions = 2;
@@ -100,6 +127,9 @@ namespace Casino
                 Console.Write("Zadejte akci: ");
                 try
                 {
+                    // zde se overuje uzivateluv vstup, jestli jeho volba existuje a jestli je validni
+                    // v pripade uspechu se vraci pomoci returnu
+                    // jinak se while opakuje
                     string? userInput = Console.ReadLine();
                     int action = 0;
                     if (userInput != null)
@@ -111,7 +141,7 @@ namespace Casino
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     continue;
                 }

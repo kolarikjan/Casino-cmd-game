@@ -8,6 +8,10 @@ namespace Casino
 {
     internal class Profiles
     {
+        //
+        // trida pro obstaravani zalezitosti kolem profilu, zapis a cteni dat o profilech, spravujici penezenku apod
+        //
+
         public List<List<string>> profilesData = new List<List<string>>();
         private string path = @"profiles.txt";
 
@@ -19,6 +23,10 @@ namespace Casino
 
         private void GetProfilesData()
         {
+            //
+            // metoda ktera provadi cteni ze souboru
+            // prectena data uklada do atributu profilesData
+            //
             try
             {
                 if (!File.Exists(this.path))
@@ -30,7 +38,7 @@ namespace Casino
                 while (!sr.EndOfStream)
                 {
                     string? line = sr.ReadLine();
-                    if (line != "")
+                    if (line != null)
                     {
                         string[] words = line.Split(",");
                         this.profilesData.Add(new List<string> { words[0], words[1] });
@@ -38,13 +46,16 @@ namespace Casino
                 }
                 sr.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.FileError();
             }
         }
         public bool AnyProfileExists()
         {
+            //
+            // metoda vracejici bool podle toho, jestli jsou v souboru nejaka data
+            //
             bool result = false;
             this.GetProfilesData();
             foreach (List<string> profile in this.profilesData)
@@ -56,6 +67,11 @@ namespace Casino
         }
         private bool CertainProfileExist(string username)
         {
+            //
+            // metoda overujici, zda existuje uz nejaky profil se stejnym username - pouziva se napr pri vytvareni noveho profilu, kdy se overuje, zda username existuje a muze ho uzivatel mit
+            //
+            // username = retezec, ktery ma reprezentovat nove vyvareny username, ten ktery chceme overit
+            //
             bool result = false;
             foreach (List<string> profile in this.profilesData)
             {
@@ -66,6 +82,9 @@ namespace Casino
         }
         public bool ProfileSelect()
         {
+            //
+            // metoda, ktera nejdrive vypise vsechna ulozena data o profilech a da na vyber uzivateli z techto profilu - na jaky profil se chce prihlasit
+            //
             bool result = false;
             this.RefreshData();
             Ui.MenuLine();
@@ -88,6 +107,7 @@ namespace Casino
                     action = int.Parse(userInput);
                     if (action > 0 && action <= i)
                     {
+                        // po vyberu na jaky profil se chce uzivatel prihlasit, se data ulozi do atributu tridy, abychom nadale vedeli, jaky profil aktualne aplikaci pouziva
                         int RealId = action - 1;
                         this.currentId = RealId;
                         this.currentName = this.profilesData[RealId][0];
@@ -104,6 +124,9 @@ namespace Casino
         }
         public void SwitchToNewAccount()
         {
+            //
+            // metoda, ktera se spusti pri vytvoreni noveho profilu a zvoleni moznosti, kdy se uzivatel chce prihlasit na tento novy profil
+            //
             int count = this.profilesData.Count - 1;
             this.currentId = count;
             this.currentName = this.profilesData[count][0];
@@ -111,6 +134,9 @@ namespace Casino
         }
         public void DeleteAccounts()
         {
+            //
+            // metoda mazajici celou databazi profilu
+            //
             try
             {
                 if (File.Exists(this.path))
@@ -123,16 +149,21 @@ namespace Casino
             {
                 this.FileError();
             }
-            
-
         }
         private void RefreshData()
         {
+            //
+            // metoda, ktera obnovuje data v tom smyslu, ze vymaze ulozena data a ze souboru je nacte znovu
+            //
             this.profilesData.Clear();
             this.GetProfilesData();
         }
         public int ProfileCreate()
         {
+            //
+            // metoda, ktera se stara o vyvoreni noveho profilu
+            // overuje validitu vstupu na zaklade pravidel predlozenych uzivateli
+            //
             int result = 1;
             Console.Write("Zadejte název nového profilu: ");
             string? username = Console.ReadLine();
@@ -145,6 +176,7 @@ namespace Casino
                     {
                         if(!this.CertainProfileExist(username))
                         {
+                            // vse je ok = profil se ulozi
                             this.ProfileNewSave(username);
                             this.GetProfilesData();
                             result = 0;
@@ -160,19 +192,26 @@ namespace Casino
         }
         public void ProfileNewSave(string username)
         {
+            //
+            // metoda, ukladajici data o novem profilu
+            //
             try
             {
                 StreamWriter sw = new StreamWriter(this.path, true);
                 sw.WriteLine("{0},5000", username);
                 sw.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.FileError();
             }
         }
         public bool AcceptBet()
         {
+            //
+            // metoda, ktera prijima sazky od uzivatele
+            // nejdrive se zepta kolik chce vsadit
+            //
             Console.WriteLine(string.Format("Aktuálně na účtě máte: ${0}", this.currentWallet));
             Ui.MenuLine();
             Console.Write("Kolik peněz chcete vsadit: ");
@@ -185,6 +224,7 @@ namespace Casino
                     int bet = int.Parse(input);
                     if (bet > 0 && bet <= this.currentWallet)
                     {
+                        // zde je overeni, zda sazka neni nula, a ze uzivatel takovou sumu ma opravdu na ucte
                         Bet(bet);
                         result = true;
                     }
@@ -199,6 +239,9 @@ namespace Casino
         }
         public void Bet(int bet)
         {
+            //
+            // metoda ukladajici data o sazce (jak do souboru tak do lokalnich atributu)
+            //
             this.currentBet = bet;
             string text = File.ReadAllText(this.path);
             int currentWalletNew = this.currentWallet - bet;
@@ -208,6 +251,11 @@ namespace Casino
         }
         public void CalculateWinnings(int x = 2)
         {
+            //
+            // metoda, ktera vypocitava, jak jednotlive hry dopadly pro uzivatele = kolik vyhral
+            //
+            // x = jakym cislem chceme vyhru nasobit - pri vetsine sazek se dvojnasobi, proto je to jako defaultni hodnota, ale napr pri sazce na zelenou v rulete se 14x 
+            //
             try
             {
                 string text = File.ReadAllText(this.path);
@@ -223,6 +271,9 @@ namespace Casino
         }
         private void FileError()
         {
+            //
+            // kosmeticka metoda informujici o chybe pri praci se souborem
+            //
             Console.WriteLine("Během práce se souborem došlo k chybě, zkuste program restartovat a vypnout soubory, do kterých se data ukládají!");
             Console.ReadKey();
             Environment.Exit(0);

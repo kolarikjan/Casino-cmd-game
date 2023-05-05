@@ -4,6 +4,10 @@ namespace Casino
 {
     internal class Blackjack
     {
+        //
+        // trida pro hru blackjack
+        //
+
         public string winner = "";
         public bool finished = false;
 
@@ -17,6 +21,10 @@ namespace Casino
 
         public void PrepareGame()
         {
+            //
+            // metoda, ktera se spousti pred vsim ostatnim
+            // slouzi k vytvoreni balicku a k tomu, ze obe strany dostanou dve karty - zakladni setup pri blackjacku
+            //
             GenerateDeck();
 
             for (int i = 0; i < 4; i++)
@@ -40,6 +48,12 @@ namespace Casino
         }
         public void PrintCards(bool hideCroupierCards = true)
         {
+            //
+            // metoda, ktera vypisuje hraci, jake kary ma a jake ma krupier
+            //
+            // hideCroupierCards = pokud hra neni dokoncena, krupier ma otocenou jen jednu kartu
+            //                     v pripade ze hra jiz skoncila atributem posilame false - aby hrac realne videl, jake karty protistrana mela
+            //
             Console.Write("Vaše karty: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
             foreach (string card in this.playerCards)
@@ -75,6 +89,9 @@ namespace Casino
         }
         private void Check21()
         {
+            //
+            // metoda, kontrolujici blackjack
+            //
             int player = this.playerScore;
             int croupier = this.croupierScore;
 
@@ -95,21 +112,35 @@ namespace Casino
         }
         private void GameWinPlayer()
         {
+            //
+            // uklada informaci o tom, ze hrac vyhral
+            //
             this.winner = "player";
             this.finished = true;
         }
         private void GameWinCroupier()
         {
+            //
+            // uklada informaci o tom, ze krupier vyhral
+            //
             this.winner = "croupier";
             this.finished = true;
         }
         private void GameTied()
         {
+            //
+            // uklada informaci o tom, ze hra skoncila remizou - obe strany maji shodnou hodnotu jejich karet
+            //
             this.winner = "tied";
             this.finished = true;
         }
         private void CheckScore()
         {
+            //
+            // metoda kontroluje, zda uz nekdo nahodnou nevyhral
+            // to se stane, kdyz jedna ze stran ma karty v hodnote 21 nebo jedna strana ma vice nez 21 anebo kdyz krupier ma hodnotu karet 17+ 
+            //
+            
             if (this.playerScore > 21)
             {
                 GameWinCroupier();
@@ -137,6 +168,11 @@ namespace Casino
         }
         public void ActionRound(int action)
         {
+            //
+            // samotne jedno kolo v blackjacku
+            //
+            // action = co v kole chce delat hrac (1-hit,2-stand,3-double,4-ff)
+            //
             switch (action)
             {
                 case 1:
@@ -166,6 +202,9 @@ namespace Casino
         }
         public int CalculateX()
         {
+            //
+            // pocita jakym cislem nasobime vyhru
+            //
             int result = 0;
             if (this.winner == "player")
             {
@@ -184,6 +223,11 @@ namespace Casino
 
         public void PostGame(int currentBet = 0)
         {
+            //
+            // metoda, vypisujici infomraci o tom kdo vyhral, pripadne kolik kdo vyhral a prohral
+            //
+            // currentBet = jaka byla vsazena castka
+            //
             switch (winner)
             {
                 case "player":
@@ -223,6 +267,11 @@ namespace Casino
         }
         private void SelectRandomCard(string who)
         {
+            //
+            // metoda, ktera vybira nejakou nahodnou kartu z atributu deck
+            //
+            // who = kdo si lize kartu? hrac nebo krupier
+            //
             int randomNumber = Games.RandomNumber(this.deck.Count);
             if (who == "player")
             {
@@ -234,16 +283,24 @@ namespace Casino
                 this.croupierCards.Add(this.deck[randomNumber]);
                 this.croupierScore = CountHand(this.croupierCards);
             }
+
+            // kartu z balicku odebereme a ihned zkontrolujeme blackjack
             this.deck.RemoveAt(randomNumber);
             Check21();
         }
 
         private int CountHand(List<string> hand)
         {
+            //
+            // metoda, ktera pocita, jakou honotu maji karty, ktere jsou predany
+            //
+            // hand = toto jsou karty, ktere predavame
+            //
             int total = 0;
             int aceCount = 0;
             foreach (string handCard in hand)
             {
+                // pokud karta ma delku tri, jedna se o napriklad srdcovou desitku
                 string cardType = handCard.Length == 3 ? handCard[1].ToString() + handCard[2].ToString() : handCard[1].ToString();
                 if (cardType == "A")
                 {
@@ -251,6 +308,7 @@ namespace Casino
                 }
                 else
                 {
+                    // vetsina karet ma cislo, nektere vsak pismeno, to zkontrolujeme zde
                     if (cardType == "K" || cardType == "J" || cardType == "Q")
                     {
                         total = total + 10;
@@ -263,6 +321,7 @@ namespace Casino
             }
             if (aceCount > 0)
             {
+                // funkce pro pocitani esa, to totiz muze nabyvat dvou hodnot: 1 a 11
                 for (int i = 0; i < aceCount; i++)
                 {
                     if (total + 11 <= 21)
@@ -279,6 +338,9 @@ namespace Casino
         }
         private void GenerateDeck()
         {
+            //
+            // metoda pro vytvoreni balicku
+            //
             string[] cards = { "Q", "J", "K", "A", "2", "4", "5", "6", "7", "8", "9", "10" };
             string[] types = { "♦", "♣", "♠", "♥" };
             foreach (string card in cards)
